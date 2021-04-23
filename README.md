@@ -26,10 +26,7 @@ This is the script that sets the layout of the LMM_DataViewer_GUI.
 
 ### plottingTool.ui
 This is the ui file for designing the GUI using the PyQt5 designer.  To use PyQt5 designer, if you have anaconda installed, simply open the anaconda prompt
-and type:
-'''
-designer
-'''
+and type 'designer'
 then press enter.  This should run the designer interface.  Then you can open the .ui file to edit the GUI layout.  Once you are done with 
 edits you can save the new .ui file and create the python file for the GUI.  To do this use the anaconda promt to navigate to the directory of the ui file.
 Then enter the command:
