@@ -1,0 +1,77 @@
+#!/usr/bin/python3
+# print("starting")
+# Module Specific Code for Lidar Mapping Module
+# By Michael Fuell with Team Electric Boogaloo
+# Base code Designed by Justin Leanord
+
+#from gpiozero import DigitalInputDevice
+import time
+import sys
+import os
+import RPi.GPIO as GPIO
+# -------------- End of Imports ------------------------
+# -------------- Start of Definitions ------------------
+
+# read and trade functions stolen straight from MDM demo code
+def read():
+    out = ""
+    while out == "":
+        out = sys.stdin.readline()
+    return out.rstrip()
+
+def trade(message):
+    print(message)
+    return read()
+
+# -------------- End of Definitions --------------------
+
+
+# Handle arguments
+for i, arg in enumerate(sys.argv[1:]):
+    if arg == "type":
+        print("piped serial")
+        quit()
+    else:
+        print("Unexpected argument:", arg, file=sys.stderr())
+        quit()
+
+# Wait until piped serial is functional
+while trade("Module?") != "LMM":
+    pass
+
+clicks = 0
+lastClicks = 0
+lastPin = 0
+GPIO.setmode(GPIO.BCM)
+# Change pin numbers to be correct for each device
+GPIO.setup(23, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(24, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(25, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+while True:
+    # Code Here
+# Change pin numbers to be correct for each device
+    if( (GPIO.input(23)) == 0):		#Check for pin 1 (GPIO23)
+        if(lastPin == 3):			# if last pin was 3
+            clicks = clicks + 1		# Incriment clicks
+        elif(lastPin == 2):			# if last pin was 2
+            clicks = clicks - 1		# decriment clicks
+        lastPin = 1					#set lastPin to pin1
+# Change pin numbers to be correct for each device
+    elif( (GPIO.input(24)) == 0): 	#Check for pin 2 (GPIO24)
+        if(lastPin == 1):			# if last pin was 1
+            clicks = clicks + 1		# Incriment clicks
+        elif(lastPin == 3):			# if last pin was 3
+            clicks = clicks - 1		# decriment clicks
+        lastPin = 2					#set lastPin to pin2
+# Change pin numbers to be correct for each device
+    elif( (GPIO.input(25)) == 0): 	#Check for pin 3 (GPIO25)
+        if(lastPin == 2):			# if last pin was 2
+            clicks = clicks + 1		# Incriment clicks
+        elif(lastPin == 1):			# if last pin was 1
+            clicks = clicks - 1		# decriment clicks
+        lastPin = 3					#set lastPin to pin3
+    if(lastClicks == clicks):
+        lastClicks = clicks
+    else:
+        print(clicks)
+    lastClicks = clicks
